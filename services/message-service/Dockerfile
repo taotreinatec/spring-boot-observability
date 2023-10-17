@@ -3,9 +3,7 @@ FROM docker.io/maven:3.9.4 AS build
 WORKDIR /message-service
 
 COPY pom.xml /message-service/pom.xml
-RUN ["mvn", "dependency:resolve"]
 
-# Adding source, compile and package into a fat jar
 COPY ["src/main", "/message-service/src/main"]
 RUN ["mvn", "clean", "package"]
 

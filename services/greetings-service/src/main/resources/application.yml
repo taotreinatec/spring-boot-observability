@@ -5,6 +5,8 @@ service:
   #helloHost: localhost
   helloHost: ${HELLO_SERVICE_HOST}
   helloPort: ${HELLO_SERVICE_PORT}
+  fortuneHost: ${FORTUNE_SERVICE_HOST}
+  fortunePort: ${FORTUNE_SERVICE_PORT}
 
 # new
 

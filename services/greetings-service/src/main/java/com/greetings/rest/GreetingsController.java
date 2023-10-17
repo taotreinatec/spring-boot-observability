@@ -21,4 +21,10 @@ public class GreetingsController {
         return result;
     }
 
+    @GetMapping("/fortune")
+    public String getFortune() {
+        String result = greetingsService.printFortune();
+        return result;
+    }
+
 }

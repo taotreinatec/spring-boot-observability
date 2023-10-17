@@ -71,6 +71,13 @@ services:
     networks:
       - observability
 
+  fortune-service:
+    build: ./services/fortune-service
+    ports:
+      - "8585:8585"
+    networks:
+      - observability
+
   hello-service:
     build: ./services/hello-service
     ports:
@@ -90,7 +97,8 @@ services:
     environment:
       HELLO_SERVICE_HOST: hello-service
       HELLO_SERVICE_PORT: 8888
-    #   JAEGER_HOST: jaeger
+      FORTUNE_SERVICE_HOST: fortune-service
+      FORTUNE_SERVICE_PORT: 8585
     networks:
       - observability
 
