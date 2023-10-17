@@ -1,37 +1,101 @@
 version: "3"
 
 services:
-  jaeger:
-    image: "jaegertracing/all-in-one:latest"
+  # jaeger:
+  #   image: "jaegertracing/all-in-one:latest"
+  #   ports:
+  #     - "5775:5775/udp"
+  #     - "6831:6831/udp"
+  #     - "6832:6832/udp"
+  #     - "5778:5778"
+  #     - "16686:16686"
+  #     - "14268:14268"
+  #     - "9411:9411"
+  #   networks:
+  #     - observability
+
+  # prometheus:
+  #   image: prom/prometheus
+  #   command:
+  #     - '--config.file=/etc/prometheus/prometheus.yml'
+  #   ports:
+  #     - 9090:9090
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ./infra/prometheus:/etc/prometheus
+  #     - prom_data:/prometheus
+  #   networks:
+  #     - observability
+
+  # grafana:
+  #   image: grafana/grafana
+  #   ports:
+  #     - 3000:3000
+  #   restart: unless-stopped
+  #   environment: 
+  #     - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
+  #     - GF_SECURITY_ADMIN_USER=admin
+  #     - GF_SECURITY_ADMIN_PASSWORD=grafana
+  #   volumes:
+  #     - ./infra/grafana:/etc/grafana/provisioning/datasources
+  #   networks:
+  #     - observability
+
+  # loki:
+  #   image: grafana/loki
+  #   ports:
+  #     - "3100:3100"
+  #   command: -config.file=/etc/loki/local-config.yaml
+  #   networks:
+  #     - observability
+
+  # promtail:
+  #   image: grafana/promtail
+  #   volumes:
+  #     - /var/log:/var/log
+  #   command: -config.file=/etc/promtail/config.yml
+  #   networks:
+  #     - observability
+
+  message-service:
+    build: ./services/message-service
     ports:
-      - "5775:5775/udp"
-      - "6831:6831/udp"
-      - "6832:6832/udp"
-      - "5778:5778"
-      - "16686:16686"
-      - "14268:14268"
-      - "9411:9411"
+      - "8787:8787"
+    networks:
+      - observability
+
+  name-service:
+    build: ./services/name-service
+    ports:
+      - "8686:8686"
+    networks:
+      - observability
 
   hello-service:
-    build: ./hello-service
+    build: ./services/hello-service
     ports:
       - "8888:8888"
     environment:
-      JAEGER_HOST: jaeger
-    links:
-      - jaeger
+      MESSAGE_SERVICE_HOST: message-service
+      MESSAGE_SERVICE_PORT: 8787
+      NAME_SERVICE_HOST: name-service
+      NAME_SERVICE_PORT: 8686
+    networks:
+      - observability
 
   greetings-service:
-    build: ./greetings-service
+    build: ./services/greetings-service
     ports:
       - "8080:8080"
     environment:
       HELLO_SERVICE_HOST: hello-service
       HELLO_SERVICE_PORT: 8888
-      JAEGER_HOST: jaeger
-    links:
-       - hello-service
-       - jaeger
+    #   JAEGER_HOST: jaeger
+    networks:
+      - observability
 
+volumes:
+  prom_data:
 
-
+networks:
+  observability:
