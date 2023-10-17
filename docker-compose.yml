@@ -57,6 +57,13 @@ services:
   #   networks:
   #     - observability
 
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:80"
+    networks:
+      - observability
+
   message-service:
     build: ./services/message-service
     ports:
