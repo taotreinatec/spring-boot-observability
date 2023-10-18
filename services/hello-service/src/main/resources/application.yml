@@ -10,3 +10,9 @@ service:
 spring:
   application:
     name: hello-service
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health, info, metrics, prometheus"

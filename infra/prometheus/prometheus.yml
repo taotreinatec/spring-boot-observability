@@ -10,12 +10,25 @@ alerting:
     timeout: 10s
     api_version: v1
 scrape_configs:
-- job_name: prometheus
-  honor_timestamps: true
-  scrape_interval: 15s
-  scrape_timeout: 10s
-  metrics_path: /metrics
-  scheme: http
-  static_configs:
-  - targets:
-    - localhost:9090
+  - job_name: prometheus
+    honor_timestamps: true
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    static_configs:
+    - targets:
+      - localhost:9090
+  - job_name: springboot
+    honor_timestamps: true
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    metrics_path: /actuator/prometheus
+    scheme: http
+    static_configs:
+    - targets:
+      - greetings-service:8080
+      - hello-service:8888
+      - name-service:8686
+      - message-service:8787
+      - fortune-service:8585
