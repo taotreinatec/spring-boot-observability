@@ -27,35 +27,35 @@ services:
   #   networks:
   #     - observability
 
-  # grafana:
-  #   image: grafana/grafana
-  #   ports:
-  #     - 3000:3000
-  #   restart: unless-stopped
-  #   environment: 
-  #     - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
-  #     - GF_SECURITY_ADMIN_USER=admin
-  #     - GF_SECURITY_ADMIN_PASSWORD=grafana
-  #   volumes:
-  #     - ./infra/grafana:/etc/grafana/provisioning/datasources
-  #   networks:
-  #     - observability
+  grafana:
+    image: grafana/grafana
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    environment: 
+      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=grafana
+    volumes:
+      - ./infra/grafana:/etc/grafana/provisioning/datasources
+    networks:
+      - observability
 
-  # loki:
-  #   image: grafana/loki
-  #   ports:
-  #     - "3100:3100"
-  #   command: -config.file=/etc/loki/local-config.yaml
-  #   networks:
-  #     - observability
+  loki:
+    image: grafana/loki
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - observability
 
-  # promtail:
-  #   image: grafana/promtail
-  #   volumes:
-  #     - /var/log:/var/log
-  #   command: -config.file=/etc/promtail/config.yml
-  #   networks:
-  #     - observability
+  promtail:
+    image: grafana/promtail
+    volumes:
+      - /var/log:/var/log
+    command: -config.file=/etc/promtail/config.yml
+    networks:
+      - observability
 
   frontend:
     build: ./frontend
